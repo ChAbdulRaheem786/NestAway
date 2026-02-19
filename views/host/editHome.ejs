@@ -1,0 +1,47 @@
+<%- include('../partials/head') %>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-sans min-h-screen">
+    <%- include('../partials/nav') %>
+
+    <main class="flex justify-center items-start px-4 py-16">
+        <div class="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl w-full max-w-md p-8">
+            <header class="mb-6 text-center">
+                <h1 class="text-3xl font-extrabold text-white">
+                    <%= editing ? 'Edit' : 'Add' %> your Home
+                </h1>
+                <p class="text-slate-300 mt-1">
+                    Add your property details below
+                </p>
+            </header>
+
+            <form action="/host/<%= editing ? 'edit-home/' : 'add-home' %>" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <input type="hidden" name="id" value="<%= editing ? home._id : '' %>">
+
+                <input type="text" name="houseName" placeholder="House Name" required value="<%= editing ? home.houseName : '' %>"
+                    class="w-full px-4 py-3 border border-white/20 bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-fuchsia-500">
+
+                <input type="number" name="price" placeholder="Price per night" required value="<%= editing ? home.price : '' %>"
+                    class="w-full px-4 py-3 border border-white/20 bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-fuchsia-500">
+
+                <input type="text" name="location" placeholder="Enter location" required value="<%= editing ? home.location : '' %>"
+                    class="w-full px-4 py-3 border border-white/20 bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-fuchsia-500">
+
+                <input type="number" name="rating" placeholder="Rating" required value="<%= editing ? home.rating : '' %>"
+                    class="w-full px-4 py-3 border border-white/20 bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-fuchsia-500">
+
+                <input type="file" accept="image/jpg, image/jpeg , image/png" name="photo" required class="w-full px-4 py-3 border border-white/20 bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-fuchsia-500">
+                <input type="tel" required name="phone" placeholder="0000-0000000" class="w-full px-4 py-3 border border-white/20 bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-fuchsia-500" value="<%= editing ? home.phone : '' %>">
+
+                <textarea name="description" placeholder="Describe your home" required
+                    class="w-full px-4 py-3 border border-white/20 bg-white/10 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-fuchsia-500"><%= editing ? home.description : '' %></textarea>
+
+                <input
+                    type="submit"
+                    value="<%= editing ? 'Update Home' : 'Add Home' %>"
+                    class="w-full py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-fuchsia-600 to-rose-500 shadow-lg hover:scale-[1.02] hover:shadow-fuchsia-500/40 transition-all duration-300 cursor-pointer"
+                />
+            </form>
+        </div>
+    </main>
+</body>
+</html>

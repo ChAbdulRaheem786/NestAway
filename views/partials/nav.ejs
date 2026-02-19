@@ -1,0 +1,89 @@
+<nav class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border-b border-white/10 backdrop-blur-xl shadow-xl relative z-50">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center relative">
+    <div class="text-2xl font-extrabold bg-gradient-to-r from-fuchsia-500 via-rose-500 to-orange-400 bg-clip-text text-transparent tracking-tight">
+      NestAway
+    </div>
+
+    <input type="checkbox" id="menu-toggle" class="hidden peer" />
+
+    <label for="menu-toggle" class="md:hidden cursor-pointer space-y-1.5 z-50">
+      <span class="block w-7 h-0.5 bg-white"></span>
+      <span class="block w-7 h-0.5 bg-white"></span>
+      <span class="block w-7 h-0.5 bg-white"></span>
+    </label>
+
+    <div class="hidden md:flex items-center gap-8">
+      <a href="/" class="font-medium transition <%= currentPage==='Home' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Home</a>
+      <% if(isLoggedIn){ %>
+        <% if(user&&user.usertype==='guest'){ %> 
+          <a href="/homes" class="font-medium transition <%= currentPage==='Home List' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Home List</a>
+          <a href="/bookings" class="font-medium transition <%= currentPage==='Bookings' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Bookings</a>
+          <a href="/Favorites" class="font-medium transition <%= currentPage==='Favorites' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Favorites</a>
+        <% }else{ %>
+          <a href="/host/host-home-list" class="font-medium transition <%= currentPage==='Host Home List' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Host Homes</a>
+          <a href="/host/add-home" class="font-medium transition <%= currentPage==='Add Home' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Add Home</a>
+        <% } %>
+      <% } %>
+      <% if(!isLoggedIn){ %>
+        <a href="/signup" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white font-semibold shadow-lg hover:scale-105 transition">
+          Sign up
+        </a>
+        <a href="/login" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white font-semibold shadow-lg hover:scale-105 transition">
+          Login
+        </a>
+      <% }else{ %>
+        <form action="/logout" method="POST">
+          <input type="submit" value="Logout" class="ml-4 px-6 py-2.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white font-semibold shadow-lg hover:scale-105 transition">
+        </form>
+      <% } %>
+    </div>
+
+    <div id="mobile-menu" class="absolute left-0 top-full w-full bg-slate-900/95 backdrop-blur-xl border-t border-white/10 hidden flex-col gap-5 px-6 py-6 md:hidden z-[999]">
+      <a href="/" class="text-slate-300 hover:text-white transition">Home</a>
+      <% if(isLoggedIn){ %>
+        <% if(user&&user.usertype==='guest'){ %> 
+          <a href="/homes" class="font-medium transition <%= currentPage==='Home List' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Home List</a>
+          <a href="/Favorites" class="font-medium transition <%= currentPage==='Favorites' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Favorites</a>
+        <% }else{ %>
+          <a href="/host/host-home-list" class="font-medium transition <%= currentPage==='Host Home List' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Host Homes</a>
+          <a href="/host/add-home" class="font-medium transition <%= currentPage==='Add Home' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Add Home</a>
+        <% } %>
+      <% } %>
+      <% if(!isLoggedIn){ %>
+        <a href="/signup" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white font-semibold shadow-lg hover:scale-105 transition">
+          SignUp
+        </a>
+        <a href="/login" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white font-semibold shadow-lg hover:scale-105 transition">
+          Login
+        </a>
+      <% }else{ %>
+        <form action="/logout" method="POST">
+          <input type="submit" value="Logout" class="ml-4 px-6 py-2.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white font-semibold shadow-lg hover:scale-105 transition">
+        </form>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    toggle.addEventListener('change', () => {
+      if(toggle.checked) {
+        mobileMenu.classList.remove('hidden');
+        mobileMenu.classList.add('flex');
+      } else {
+        mobileMenu.classList.remove('flex');
+        mobileMenu.classList.add('hidden');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !toggle.contains(e.target) && !document.querySelector('label[for="menu-toggle"]').contains(e.target)) {
+        toggle.checked = false;
+        mobileMenu.classList.remove('flex');
+        mobileMenu.classList.add('hidden');
+      }
+    });
+  </script>
+</nav>
