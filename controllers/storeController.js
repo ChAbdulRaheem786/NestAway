@@ -36,7 +36,7 @@ exports.getBookings=(req,res,next)=>{
 exports.getFavorites=async (req,res,next)=>{
     const userId=req.session.user._id;
     const user=await User.findById(userId).populate('favorites');
-    res.render('store/FavoriteList',{
+    res.render('store/favoriteList',{
         FavoriteHomes:user.favorites,
         pageTitle:'My Favorites',
         currentPage:'Favorites',
