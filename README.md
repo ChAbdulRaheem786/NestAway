@@ -1,7 +1,7 @@
 # 🏡 NestAway
 
 NestAway is a full-stack Airbnb-style rental platform built with Node.js, Express, MongoDB, and EJS.  
-It allows users to browse properties, hosts to list homes, upload images, and manage listings with secure session-based authentication.
+It allows users to browse properties, add favorites, add bookings, cancel bookings, hosts to list homes, upload images, and manage listings with secure session-based authentication.
 
 ---
 
@@ -24,6 +24,8 @@ It allows users to browse properties, hosts to list homes, upload images, and ma
 - Upload property images (Multer)
 - View property listings
 - Host-only dashboard access
+- Bookings
+- Add to favorites
 
 ### 🗄 Database
 - MongoDB Atlas integration
