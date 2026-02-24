@@ -1,0 +1,95 @@
+<%- include('../partials/head') %>
+</head>
+
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-slate-100 font-sans min-h-screen">
+  <%- include('../partials/nav') %>
+
+  <!-- Hero Image -->
+  <header class="relative w-full h-[500px] md:h-[600px]">
+    <img 
+      src="<%= home.photo %>" 
+      alt="Photo of <%= home.houseName %>"
+      class="absolute inset-0 w-full h-full object-cover rounded-b-3xl"
+    />
+    <div class="absolute inset-0 bg-black/50 rounded-b-3xl"></div>
+
+    <div class="relative z-10 flex flex-col justify-center items-center h-full text-center text-white px-6">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
+        <%= home.houseName %>
+      </h1>
+      <p class="text-lg md:text-xl opacity-90">
+        <%= home.location %>
+      </p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+    <!-- Left: Details -->
+    <section class="lg:col-span-2 bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl p-8">
+      <h2 class="text-2xl font-semibold text-white mb-6">
+        About this place
+      </h2>
+
+      <div class="space-y-4 text-slate-200 text-lg">
+        <p>
+          📍 <span class="font-medium text-white">Location:</span>
+          <%= home.location %>
+        </p>
+
+        <p>
+          ⭐ <span class="font-medium text-white">Rating:</span>
+          <%= home.rating %> / 5
+        </p>
+
+        <p>
+          💰 <span class="font-medium text-white">Price per night:</span>
+          <span class="text-rose-500 font-semibold">
+            $<%= home.price %>
+          </span>
+        </p>
+      </div>
+
+      <hr class="my-8 border-white/20">
+
+      <p class="text-slate-300 leading-relaxed">
+        Enjoy a comfortable stay at <strong><%= home.houseName %></strong>.
+        This property offers a relaxing atmosphere, great location, and
+        excellent amenities—perfect for travelers looking for both comfort
+        and convenience.
+      </p>
+    </section>
+    <aside class="bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg p-6 h-fit sticky top-24">
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-2xl font-bold text-white">
+          $<%= home.price %>
+        </span>
+        <span class="text-slate-300">/ night</span>
+      </div>
+
+      <div class="text-sm text-slate-300 mb-6">
+        ⭐ <%= home.rating %> · Excellent rating
+      </div>
+      <div class="text-sm text-slate-300 mb-6">
+        <%= home.phone %> · Call here to book
+      </div>
+      <form action="/book" method="POST">
+        <input type="hidden" name="homeId" value="<%= home._id %>">
+        <button type="submit" class="px-5 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold shadow-md hover:scale-105 transition"
+>Book</button>
+      </form>
+      <p class="text-center text-slate-400 text-sm mt-4">
+        You won't be charged yet
+      </p>
+
+    </aside>
+
+  </main>
+
+  <footer class="bg-white/5 backdrop-blur-lg border-t border-white/10 mt-20 py-8 text-center text-slate-400">
+    &copy; 2026 NestAway. All rights reserved.
+  </footer>
+
+</body>
+</html>

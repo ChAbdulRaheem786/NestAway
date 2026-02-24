@@ -23,6 +23,19 @@ const userSchema= new mongoose.Schema({
     favorites: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Home'
+    }],
+    adminHouses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Home'
+    }],
+    requests: [{
+        home: { type: mongoose.Schema.Types.ObjectId, ref: 'Home' },
+        guestEmail: { type: String, required: true },
+        bookedAt: { type: Date, default: Date.now }
+    }],
+    bookings: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Home'
     }]
 });
 module.exports=mongoose.model('User',userSchema);

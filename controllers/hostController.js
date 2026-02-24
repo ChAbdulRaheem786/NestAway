@@ -1,4 +1,5 @@
 const Home=require('../models/homes');
+const User=require('../models/user');
 const fs=require('fs');
 exports.getAddHome=(req,res,next)=>{
     res.render('host/editHome',{
@@ -29,7 +30,7 @@ exports.getEditHome=(req,res,next)=>{
     });
         
 }
-exports.postAddHome=(req,res,next)=>{
+exports.postAddHome=async (req,res,next)=>{
     if(!req.file){
         console.log('No image provided');
         return res.status(422).send('No image provided')
@@ -42,12 +43,17 @@ exports.postAddHome=(req,res,next)=>{
         rating,
         description,
         phone,
-        photo:req.file.path
+        photo:req.file.path,
+        owner:req.session.user._id
     });
     
-    home.save().then(()=>{
-        console.log('Home saved successfully')
-    });
+    const savedHome = await home.save();
+
+    const userId=req.session.user._id;
+    const user=await User.findById(userId)
+    user.adminHouses.push(savedHome._id);
+    await user.save();
+    
     res.redirect('/host/host-home-list');
 }
 exports.postEditHome=(req,res,next)=>{
@@ -77,23 +83,67 @@ exports.postEditHome=(req,res,next)=>{
         res.redirect('/host/host-home-list');
     });
 }
-exports.getHostHomes=(req,res,next)=>{
-    Home.find().then(registeredHomes=>{
-        res.render('host/hostHomeList',{
-            registeredHomes:registeredHomes,
-            pageTitle:'Host Home List',
-            currentPage:'Host Home List',
-            isLoggedIn:req.isLoggedIn,
-            user: req.session.user
-        });
+exports.getHostHomes=async (req,res,next)=>{
+    const userId=req.session.user._id;
+    const user=await User.findById(userId).populate('adminHouses');
+    res.render('host/hostHomeList',{
+        registeredHomes:user.adminHouses,
+        pageTitle:'Host Home List',
+        currentPage:'Host Home List',
+        isLoggedIn:req.isLoggedIn,
+        user: req.session.user
     });
 }
-exports.postDeleteHome=(req,res,next)=>{
-    const homeId=req.params.homeId;
-    Home.findByIdAndDelete(homeId).then(() => {
+exports.postDeleteHome = async (req, res, next) => {
+    const homeId = req.params.homeId;
+        await Home.findByIdAndDelete(homeId);
+        await User.updateMany(
+            { favorites: homeId },
+            { $pull: { favorites: homeId } }
+        );
+        await User.updateMany(
+            { bookings: homeId },
+            { $pull: { bookings: homeId } }
+        );
+        await User.updateMany(
+            { adminHouses: homeId },
+            { $pull: { adminHouses: homeId } }
+        );
+        await User.updateMany(
+            { "requests.home": homeId },
+            { $pull: { requests: { home: homeId } } }
+        );
         res.redirect('/host/host-home-list');
-    }).catch(err => {
-        console.log('Error while deleting home', err);
-        res.redirect('/host/host-home-list');
+};
+exports.getRequest = async (req, res, next) => {
+    const userId = req.session.user._id;
+
+    const user = await User.findById(userId).populate({
+        path: 'requests.home'
     });
-}
+
+    res.render('host/request', {
+        requests: user.requests,
+        pageTitle: 'Requests',
+        currentPage: 'Requests',
+        isLoggedIn: req.isLoggedIn,
+        user: req.session.user
+    });
+};
+exports.postDeleteRequest = async (req, res, next) => {
+    const homeId = req.params.homeId;
+    const adminId = req.session.user._id;
+    const admin = await User.findById(adminId);
+    const request = admin.requests.find(r => r.home.toString() === homeId);
+    if (!request) {
+        return res.redirect('/host/request');
+    }
+    const guest = await User.findOne({ email: request.guestEmail });
+    if (guest) {
+        guest.bookings = guest.bookings.filter(book => book.toString() !== homeId);
+        await guest.save();
+    }
+    admin.requests = admin.requests.filter(r => r.home.toString() !== homeId);
+    await admin.save();
+    res.redirect('/host/request');
+};

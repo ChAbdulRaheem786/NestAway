@@ -21,6 +21,7 @@
           <a href="/Favorites" class="font-medium transition <%= currentPage==='Favorites' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Favorites</a>
         <% }else{ %>
           <a href="/host/host-home-list" class="font-medium transition <%= currentPage==='Host Home List' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Host Homes</a>
+          <a href="/host/request" class="font-medium transition <%= currentPage==='Requests' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Requests</a>
           <a href="/host/add-home" class="font-medium transition <%= currentPage==='Add Home' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Add Home</a>
         <% } %>
       <% } %>
@@ -43,9 +44,11 @@
       <% if(isLoggedIn){ %>
         <% if(user&&user.usertype==='guest'){ %> 
           <a href="/homes" class="font-medium transition <%= currentPage==='Home List' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Home List</a>
+          <a href="/bookings" class="font-medium transition <%= currentPage==='Bookings' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Bookings</a>
           <a href="/Favorites" class="font-medium transition <%= currentPage==='Favorites' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Favorites</a>
         <% }else{ %>
           <a href="/host/host-home-list" class="font-medium transition <%= currentPage==='Host Home List' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Host Homes</a>
+          <a href="/host/request" class="font-medium transition <%= currentPage==='Host Home List' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Requests</a>
           <a href="/host/add-home" class="font-medium transition <%= currentPage==='Add Home' ? 'text-fuchsia-400' : 'text-slate-300 hover:text-white' %>">Add Home</a>
         <% } %>
       <% } %>

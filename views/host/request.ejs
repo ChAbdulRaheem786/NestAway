@@ -4,46 +4,47 @@
     <%- include('../partials/nav') %>
 
   <header class="bg-gradient-to-r from-fuchsia-600 via-rose-500 to-orange-400 text-white py-20 text-center shadow-xl">
-    <h1 class="text-5xl font-extrabold mb-5 tracking-tight">
-      Here are your booked Homes
+    <h1 class="text-3xl font-extrabold mb-5 tracking-tight">
+      Here are your requests
     </h1>
-    <p class="text-lg text-white/90">
-    </p>
   </header>
 
   <main class="max-w-6xl mx-auto px-6 py-16">
     <ul class="grid md:grid-cols-2 gap-10">
-      <% bookings.forEach(home => { %>
+  <% requests.forEach(req => { %>
         <li class="group bg-white/10 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-xl hover:shadow-fuchsia-500/20 transition-all duration-300 hover:-translate-y-2">
           
           <span class="text-white font-semibold text-2xl tracking-tight">
-            <%= home.houseName %>
+            <%= req.home.houseName %>
           </span>
 
           <div class="mt-3 space-y-1 text-slate-300">
-            <p>Price: $<%= home.price %></p>
-            <p>Location: <%= home.location %></p>
-            <p>Rating: <%= home.rating %></p>
+            <p>Guest: <%= req.guestEmail %></p>
+    <p>Price: $<%= req.home.price %></p>
+    <p>Location: <%= req.home.location %></p>
+    <p>Booked at: <%= req.bookedAt.toLocaleString() %></p>
           </div>
 
           <div class="overflow-hidden rounded-xl mt-5 relative">
             <img 
-              src="<%= home.photo %>" 
-              alt="Photo of <%= home.houseName %>" 
+              src="<%=  req.home.photo %>" 
+              alt="Photo of <%= req.home.houseName %>" 
               class="w-full h-56 object-cover transform group-hover:scale-110 transition duration-500"
             >
           </div>
-
-          <form action="/booking/remove/<%= home._id %>" method="post" class="mt-6 flex justify-between items-center">
-            <button type="submit" class="px-5 py-2 rounded-lg bg-red-600 text-white font-semibold shadow-md hover:bg-red-700 transition">
-              Cancel Booking
-            </button>
-          </form>
+          <form action="/host/deleteRequest/<%= req.home._id %>" method="post" class="mt-4">
+    <input type="hidden" name="homeId" value="<%= req.home._id %>" />
+    <button
+      type="submit"
+      class="w-full py-3 rounded-xl bg-gradient-to-r from-fuchsia-600 to-rose-500 text-white font-semibold shadow-lg hover:shadow-fuchsia-500/40 hover:scale-[1.02] transition-all duration-300"
+    >
+      Delete request
+    </button>
+  </form>
 
         </li>
-      <% }); %>
-    </ul>
-    <p>You will be responded to your bookings shortly by the owner via email</p>
+  <% }) %>
+  </ul>
   </main>
 
   <footer class="bg-white/5 backdrop-blur-lg border-t border-white/10 mt-20 py-8 text-center text-slate-400">

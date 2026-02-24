@@ -58,6 +58,7 @@ app.use(express.static(path.join(rootDir,'public')));
 app.use('/uploads',express.static(path.join(rootDir,'uploads')))
 app.use('/host/uploads',express.static(path.join(rootDir,'uploads')))
 app.use('/homes/uploads',express.static(path.join(rootDir,'uploads')))
+app.use('/book/uploads',express.static(path.join(rootDir,'uploads')))
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
